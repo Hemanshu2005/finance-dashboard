@@ -63,6 +63,14 @@ Plaid API (bank transactions)
 - Output: `buy / hold / wait` recommendation with suggested dollar amount
 - Mirrors risk-adjusted decision frameworks used in wealth management
 
+### Auto-Invest (Automated Order Execution)
+- Set rule-based triggers per stock: e.g. *"invest $100 in TSLA when price crosses above SMA-20"*
+- Supported trigger types: price threshold, SMA crossover, RSI oversold, % drop from recent high
+- When a trigger condition is met, the app automatically places the trade on your behalf via **Alpaca Brokerage API** (commission-free)
+- You define the amount per trigger — the app executes without you having to watch the market
+- Full audit log: every auto-trade is recorded with timestamp, trigger condition, price at execution, and amount
+- Safety guardrails: daily spend cap, per-stock position limit, and manual pause toggle
+
 ---
 
 ## Tech Stack
@@ -78,6 +86,7 @@ Plaid API (bank transactions)
 | **Cloud Storage** | **AWS S3** (Parquet archives) |
 | **ML / Analytics** | scikit-learn, pandas, numpy |
 | **Financial Data** | Plaid API, Yahoo Finance (yfinance) |
+| **Brokerage (Auto-Invest)** | **Alpaca API** (commission-free automated order execution) |
 | **Containerization** | **Docker** + docker-compose |
 | **CI/CD** | **GitHub Actions** (TDD staged pipeline) |
 | **Testing** | pytest, TDD with shared fixtures |
@@ -200,3 +209,4 @@ finance-dashboard/
 | [Plaid](https://plaid.com) | Bank transaction sync | Sandbox: free |
 | [AWS](https://aws.amazon.com) | RDS + S3 | Free tier eligible |
 | Yahoo Finance | Stock data via yfinance | No key needed |
+| [Alpaca](https://alpaca.markets) | Auto-invest order execution | Free paper trading account |
