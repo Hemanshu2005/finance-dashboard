@@ -81,6 +81,7 @@ Plaid API (bank transactions)
 | **Containerization** | **Docker** + docker-compose |
 | **CI/CD** | **GitHub Actions** (TDD staged pipeline) |
 | **Testing** | pytest, TDD with shared fixtures |
+| **Visualization** | **Tableau** (3 dashboards: spending, budget vs actual, savings rate) |
 | **Frontend** | React (TypeScript) |
 
 ---
@@ -99,6 +100,7 @@ Plaid API (bank transactions)
 | Docker containerization | Multi-service docker-compose (API + DB + Airflow) |
 | Financial data modeling | 50/30/20 rule, savings rate, investment readiness scoring |
 | dbt data transformation | Materialized tables and views on PostgreSQL |
+| Tableau dashboards | Spending overview, budget vs actual, savings rate & financial health |
 
 ---
 
@@ -157,6 +159,9 @@ finance-dashboard/
 ├── airflow/
 │   └── dags/
 │       └── daily_refresh.py      # Nightly ETL: stocks + Plaid + dbt run
+├── tableau/
+│   ├── export_for_tableau.py     # Exports dbt views → CSV for Tableau Public
+│   └── README.md                 # Dashboard specs + PostgreSQL/CSV connection guide
 ├── tests/
 │   ├── conftest.py               # Shared fixtures: in-memory SQLite, sample data
 │   ├── test_spending_analyzer.py # TDD: trend, anomalies, paycheck allocation
