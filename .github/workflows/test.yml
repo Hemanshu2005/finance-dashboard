@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: finance_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://user:password@localhost:5432/finance_db
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install fastapi uvicorn sqlalchemy psycopg2-binary pydantic yfinance boto3 pandas numpy scikit-learn python-dotenv pytest pytest-asyncio httpx plaid-python
+
+      - name: "TDD Stage 1 — Spending Analyzer"
+        run: pytest tests/test_spending_analyzer.py -v --tb=short
+
+      - name: "TDD Stage 2 — Investment Advisor"
+        run: pytest tests/test_investment_advisor.py -v --tb=short
+
+      - name: "TDD Stage 3 — Full Suite"
+        run: pytest tests/ -v --tb=short
